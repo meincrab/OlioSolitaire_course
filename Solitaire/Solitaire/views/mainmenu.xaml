@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="OlioSolitaire3000.mainmenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OlioSolitaire3000"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="840">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Black" BorderThickness="5" Margin="50">
+                <Image Source="/Resources/final_logo.png"/>
+            </Border>
+            <Button x:Name="btnStart" Content="New Game" Margin="5" Width="200" Height="80" FontSize="28" FontFamily="Comic Sans MS" Click="btnStart_Click"/>
+            <Button x:Name="btnScores" Content="High Scores" Margin="5" Width="200" Height="80" FontSize="28" FontFamily="Comic Sans MS" Click="btnScores_Click"/>
+        </StackPanel>
+        <TextBlock Text="OlioSolitaire3000 v1.0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16"/>
+    </Grid>
+</UserControl>

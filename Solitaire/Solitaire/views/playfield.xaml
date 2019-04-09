@@ -1,0 +1,489 @@
+﻿<UserControl x:Class="OlioSolitaire3000.playfield"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OlioSolitaire3000"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="840">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <!-- Main grid, vertical rows -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"></RowDefinition>
+            <RowDefinition Height="600"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!-- Top Row; Has three columns -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!-- Deal Again Button, in column 1 -->
+            <Button Grid.Column="0" Name="btnDeal" Content="Deal Again" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Click="btnDeal_Click" />
+            <!-- Grid to show current cards in hand, in column 2 -->
+            <Grid Grid.Column="1" Margin="20" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!-- Textblock -->
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="16" Text="Current Hand:"></TextBlock>
+                <!-- Shows current cards in hand -->
+                <ItemsControl Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Name="CurrentHand">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="40" Height="60" Margin="-10,-40">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                    <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                    <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                    <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                    <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Button Click="hitBoxHome1_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+            <!-- Back to menu Button, in column 3 -->
+            <Button Grid.Column="2" Name="btnBack" Content="Back to Menu" Click="btnBack_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" />
+        </Grid>
+        <!-- Background render -->
+        <StackPanel Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0" Click="ButtonStack_Click"/>
+                    <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                    <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0" Click="ButtonTurnOver_Click"/>
+                    <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0" Click="ButtonHome1_Click"/>
+                    <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                    <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0" Click="ButtonHome2_Click"/>
+                    <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                    <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0" Click="ButtonHome3_Click"/>
+                    <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                    <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0" Click="ButtonHome4_Click"/>
+                    <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Margin="0,40">
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld1_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld2_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld3_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld4_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld5_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld6_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+                <Button Opacity="0" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="20,0"  Click="ButtonPlfld7_Click"/>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="-100,0"/>
+            </StackPanel>
+        </StackPanel>
+        <!-- Play logic -->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Width="840" Margin="0,0,0,0" Grid.RowSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <!-- Deck, binded to instance of Deck.GetDeck() -->
+                    <ItemsControl Margin="20,60" Name="pakkaDeck" Width="80">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-100">
+                                    <Grid>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                        <Button x:Name="hitBoxStack" Click="hitBoxStack_Click" Opacity="0" ></Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- turnoverdeck, binded to instance of Deck.GetDeck() -->
+                    <ItemsControl Margin="20,60" Name="turnOver" Width="80">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-100">
+                                    <Grid>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Button Click="hitBoxTurnOver_Click" Opacity="0" ></Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                    <!-- home deck 1, binded to instance of Deck.GetDeck() -->
+                    <ItemsControl Margin="20,60" Name="homedeck1" Width="80">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-100">
+                                    <Grid>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Button Click="hitBoxHome1_Click" Opacity="0" ></Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- home deck 2, binded to instance of Deck.GetDeck() -->
+                    <ItemsControl Margin="20,60" Name="homedeck2" Width="80">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-100">
+                                    <Grid>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Button Click="hitBoxHome2_Click" Opacity="0" ></Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- home deck 3, binded to instance of Deck.GetDeck() -->
+                    <ItemsControl Margin="20,60" Name="homedeck3" Width="80">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-100">
+                                    <Grid>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Button Click="hitBoxHome3_Click" Opacity="0" ></Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- home deck 4, binded to instance of Deck.GetDeck() -->
+                    <ItemsControl Margin="20,60" Name="homedeck4" Width="80">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-100">
+                                    <Grid>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Button Click="hitBoxHome4_Click" Opacity="0" ></Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Margin="0,40">
+                <!-- playfield deck 1, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck1" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield1_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- playfield deck 2, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck2" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield2_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- playfield deck 3, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck3" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield3_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- playfield deck 4, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck4" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield4_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- playfield deck 5, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck5" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield5_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- playfield deck 6, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck6" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield6_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- playfield deck 7, binded to instance of Deck.GetDeck() -->
+                <ItemsControl Margin="20,50" Name="playfieldDeck7" Width="80">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="Black" BorderThickness="2" Width="80" Height="120" Margin="0,-50">
+                                <Grid>
+                                    <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <Image Source="{Binding Path=NroImageSource}" Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Image>
+                                        <Image Source="{Binding Path=SuitImageSource}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Image>
+                                        <Rectangle Fill="{Binding Path=Colour}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush ImageSource="{Binding Path=SuitImageSource}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    <Image Source="/Resources/CardBack.png" Stretch="Fill" Visibility="{Binding Path=IsFaceDown, Converter={StaticResource BoolToVis}}"></Image>
+                                    <Button Click="hitBoxPlayfield7_Click" Opacity="0" ></Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            
+
+
+        </StackPanel>
+        <!-- Score and timer -->
+
+        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Grid.Row="2">
+            <Button x:Name="TimerOff" Content="DebugWin" Width="50" Click="TimerOff_Click"/>
+
+            <TextBlock Text="Seconds:" Margin="5" FontSize="16"/>
+            <TextBlock x:Name="TimeDisplayBlock" Text="0" Margin="5" FontSize="16"/>
+
+            <TextBlock Text="Your Score:" Margin="5" FontSize="16"/>
+            <TextBlock x:Name="ScoreDisplayBlock" Text="0" Margin="5" FontSize="16"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

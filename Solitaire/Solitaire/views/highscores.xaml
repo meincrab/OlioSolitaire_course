@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="OlioSolitaire3000.highscores"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OlioSolitaire3000"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="840">
+    <Grid>
+        <TextBlock Text="High Scores" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" FontSize="32" />
+        <StackPanel Margin="0,75,0,0">
+            <ItemsControl Margin="60,20" Name="ScoreShow" Width="auto">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding Path=Name}" Width="auto" Height="auto" HorizontalAlignment="Left" FontSize="22"></TextBlock>
+                            <TextBlock Text="{Binding Path=Score}" Width="auto" Height="auto" HorizontalAlignment="Right" FontSize="22"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        <Button Name="btnBack" Content="Back to Menu" Click="btnBack_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5" />
+    </Grid>
+</UserControl>
